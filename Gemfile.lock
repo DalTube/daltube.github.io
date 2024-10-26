@@ -33,14 +33,19 @@ GEM
       http_parser.rb (~> 0)
     ethon (0.16.0)
       ffi (>= 1.15.0)
+    eventmachine (1.2.7)
     eventmachine (1.2.7-x86-mingw32)
     ffi (1.17.0-x86-mingw32)
+    ffi (1.17.0-x86_64-linux-gnu)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
     fiber-storage (1.0.0)
     forwardable-extended (2.6.0)
     google-protobuf (4.28.3-x86-mingw32)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.28.3-x86_64-linux)
       bigdecimal
       rake (>= 13)
     hashery (2.1.2)
@@ -100,6 +105,8 @@ GEM
     mercenary (0.4.0)
     nokogiri (1.16.7-x86-mingw32)
       racc (~> 1.4)
+    nokogiri (1.16.7-x86_64-linux)
+      racc (~> 1.4)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     pdf-reader (2.12.0)
@@ -119,6 +126,9 @@ GEM
     rouge (4.4.0)
     ruby-rc4 (0.1.5)
     safe_yaml (1.0.5)
+    sass-embedded (1.80.4)
+      google-protobuf (~> 4.28)
+      rake (>= 13)
     sass-embedded (1.80.4-x86-mingw32)
       google-protobuf (~> 4.28)
     terminal-table (3.0.2)
@@ -139,6 +149,7 @@ GEM
 
 PLATFORMS
   x86-mingw32
+  x86_64-linux
 
 DEPENDENCIES
   html-proofer (~> 5.0)
