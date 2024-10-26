@@ -1,6 +1,6 @@
 ---
 title: 게임 서버의 역사 알아보기
-date: YYYY-MM-DD HH:MM:SS +09:00
+date: YYYY-MM-DD HH:MM:SS +00:00
 categories: [캠프 TIL(Today I Learned), 10월]
 tags:
   [
