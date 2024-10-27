@@ -1,0 +1,21 @@
+---
+title: STEP3-1[걷기반]. 2) 이제 좀 벌었으니 flex 한 번 해볼까요?!
+date: YYYY-MM-DD HH:MM:SS +00:00
+categories: [캠프 TIL(Today I Learned), 사전캠프]
+tags:
+  [
+    캠프
+  ]
+---
+
+**5.테이블에서 제품 이름(product_name)과 가격(price)만을 선택하는 쿼리를 작성해주세요.**
+- select product_name, price from practice2;
+
+**6.테이블에서 제품 이름에 '프로'가 포함된 모든 제품을 선택하는 쿼리를 작성해주세요.** 
+- select * from practice2 where name like '%프로%';
+
+**7.테이블에서 제품 이름이 '갤'로 시작하는 모든 제품을 선택하는 쿼리를 작성해주세요.**
+- select * from practice2 where name like '갤%';
+
+**8.테이블에서 모든 제품을 구매하기 위해 필요한 돈을 계산하는 쿼리를 작성해주세요.**
+- select sum(price) from practice2;

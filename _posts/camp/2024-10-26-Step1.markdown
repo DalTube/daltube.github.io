@@ -1,7 +1,7 @@
 ---
-title: 사전캠프 퀘스트
+title: STEP1. 사전캠프 퀘스트
 date: YYYY-MM-DD HH:MM:SS +00:00
-categories: [캠프 TIL(Today I Learned), 10월]
+categories: [캠프 TIL(Today I Learned), 사전캠프]
 tags:
   [
     캠프

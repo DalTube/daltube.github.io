@@ -1,7 +1,7 @@
 ---
-title: 게임 서버의 역사 알아보기
+title: STEP2-1. 게임 서버의 역사 알아보기
 date: YYYY-MM-DD HH:MM:SS +00:00
-categories: [캠프 TIL(Today I Learned), 10월]
+categories: [캠프 TIL(Today I Learned), 사전캠프]
 tags:
   [
     캠프
