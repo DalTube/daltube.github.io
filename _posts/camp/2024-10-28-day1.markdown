@@ -1,5 +1,5 @@
 ---
-title: 캠프 1일차
+title: (TIL) 2024-10-28
 date: 2024-10-28 21:00:00
 categories: [캠프 TIL(Today I Learned), 본캠프]
 tags:

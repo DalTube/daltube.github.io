@@ -1,0 +1,32 @@
+---
+title: (TIL) 2024-10-31
+date: 2024-10-30 21:00:00
+categories: [캠프 TIL(Today I Learned), 본캠프]
+tags:
+  [
+    캠프
+  ]
+---
+
+오늘은 프로젝트 준비 마지막날.  
+내일은 발표. 팀원이 2명밖에 남지 않았다...  
+초기 멤버들 4명이 하차하고 도중 합류한 2명 마저도 결국 오늘 하차 소식을 전해 받았다...  
+
+
+**용어**
+Static : 움직이거나 변하지 않는  
+Dynamic : 끊임 없이 변하거나 발달하는  
+
+정적(static)이란 한번 정해놓으면 변하지 않고 계속 유지되는 성질을 말하며, 동적(dynamic)이란 상황에 따라서 실시간으로 변하는 성질을 말하는 것  
+
+
+**FireStore에서 CRUD작업시 Imoport 해야하는 목록**  
+-collection : DB컨넥션  
+-addDoc : Create역할 (Document Id를 자동 생성)  
+-setDoc : Create역할 (Document Id를 직접 생성)  
+-getDocs : Read 역할  
+-updateDoc : Update 역할 
+-deleteDoc : Delete 역할  
+
+-doc: 문서에 접근할때 사용한다는데 솔직히 무슨말인지 잘 이해가 안되고 있다.  
+-query,where: 심플쿼리,복합쿼리를 이용하여 특정 데이터를 조회할 수 있다.  
