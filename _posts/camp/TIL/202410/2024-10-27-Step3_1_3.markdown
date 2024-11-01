@@ -1,7 +1,7 @@
 ---
 title: STEP3-1[걷기반]. 3) 상품 주문이 들어왔으니 주문을 처리해봅시다!
-date: YYYY-MM-DD HH:MM:SS +00:00
-categories: [캠프 TIL(Today I Learned), 사전캠프]
+date: 2024-10-27 21:00:00
+categories: [캠프, TIL (Today I Learned)]
 tags:
   [
     캠프

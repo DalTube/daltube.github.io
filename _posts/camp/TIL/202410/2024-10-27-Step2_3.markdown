@@ -1,7 +1,7 @@
 ---
 title: STEP2-3. 소프트웨어 학습 태도
-date: YYYY-MM-DD HH:MM:SS +00:00
-categories: [캠프 TIL(Today I Learned), 사전캠프]
+date: 2024-10-27 21:00:00
+categories: [캠프, TIL (Today I Learned)]
 tags:
   [
     캠프

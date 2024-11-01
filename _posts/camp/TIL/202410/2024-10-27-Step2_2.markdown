@@ -1,7 +1,7 @@
 ---
 title: STEP2-2. 게임 서버 트랙에서 자바스크립트를 학습하는 이유
-date: YYYY-MM-DD HH:MM:SS +00:00
-categories: [캠프 TIL(Today I Learned), 사전캠프]
+date: 2024-10-27 21:00:00
+categories: [캠프, TIL (Today I Learned)]
 tags:
   [
     캠프
