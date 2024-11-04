@@ -1,6 +1,6 @@
 ---
-title: (TIL) 2024-11-01
-date: 2024-11-01 00:00:00
+title: (TIL) 2024-11-04
+date: 2024-11-04 00:00:00
 categories: [캠프, TIL (Today I Learned)]
 tags:
   [
