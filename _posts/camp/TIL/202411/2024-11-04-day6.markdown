@@ -1,0 +1,420 @@
+---
+title: (TIL) 2024-11-01
+date: 2024-11-01 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프, JavaSciript
+  ]
+---
+
+# JavaScript
+
+//주석은 JS엔진이 해석하지 않음
+//메모리에 저장한다. 읽어들여서 재사용한다. 변수.
+
+
+/*****
+ * 용어 정리
+ */
+
+Nan : Not a Number
+
+undefined: 정의되지 않음. (할당 X)
+null : 값이 존재하지 않음을 '명시적'으로 나타내는 방법
+논리 연산자 : && , ||
+논리 부정 연산자 : !
+Scope(스코프) : 범위
+콜백함수 : 매개변수 자리에 함수를 넣는 것 ex) 변수.forEach(function(){});
+
+/*****
+ * Js 함수 정리
+ */
+
+//문자열
+var aaa = "aaa";
+var bbb = "bbb";
+var str = "aaa";
+
+-- 문자열 결합
+A.concat(B) : 문자열 합치기 (A + B);
+
+-- 문자열 자르기
+A.substr(시작위치, 글자 수) : 시작위치부터 지정한 '글자 수' 값 만큼 자름.
+A.slice(시작위치, 끝 위치) : 시작위치부터 끝 위치까지 자름
+
+-- 문자열 검색
+str.search("단어") : 해당 단어의 위치 찾기
+str.replace("단어A","단어B") : "단어A" 를 "단어B"로 대체
+
+-- 문자열 분할
+str.split(",") : "," 기준으로 나눈다.
+
+Object.keys(객체명) : key를 가져오는 메소드
+Object.values(객체명) : value를 가져오는 메소드
+Object.entries(객체명) : key,value를 가져오는 메소드
+Object.assign(타겟,베이스) : 베이스를 타겟에 복사
+Object.assign(타겟,베이스, {속성 : 값}) : 베이스를 타겟에 해당 속성 값을 변경해서 복사
+
+//객체
+JSON.stringify(객체) : 객체를 문자열화 시킴
+
+let perfectMan = {...person1, ...person2} : 객체 병합
+
+//배열
+배열.push("오렌지") : 요소 추가
+배열.pop() : 마지막 요소 삭제
+배열.shift() : 첫번째 요소 삭제
+배열.unshift("값") : 맨 앞에 요소 추가
+배열.splice(시작위치, 삭제갯수, "값") :  시작위치에서 삭제갯수 만큼 삭제하고 "값" 을 넣음
+배열.slice(시작위치, 종료위치) : 시작위치에서 종료위치까지 잘라서 새로운 배열로 생성
+
+foreach , map, filter, find
+
+//forEach
+변수.forEach(function(item){
+    console.log(item);
+});
+
+//map: 기존 배열을 가공해서 새로운 배열을 생산. return 필수. 항상 원본 배열의 길이만큼이 return 된다. return 타입 객체
+변수.map(function(item){
+    return item * 2; 
+});
+
+// flter : 조건에 해당되는 것만 배열로 return; return 타입 객체
+변수.filter(function(item){
+    return item === 5; 
+});
+
+// find : 조건에 해당되는 값만 출력. 조건에 해당되는 첫번째 요소의 '값'만 출력
+변수.find(function(item){
+    return item > 3; 
+});
+
+/****
+ * 변수
+ */
+
+//변수 이름: 저장된 값의 고유 이름
+//변수 값: 변수에 저장된 값
+//변수 할당: 변수에 값을 저장하는 행위
+//변수 선언: 변수를 사용하기 위해 컴퓨터에 알리는 해위
+//변수 참조: 변수에 할당된 값을 읽어오는 것
+
+변수를 선언할 수 있는 3가지 방법: var, let, const
+
+1.var
+var myVar = "Hellow World";
+var myVar = "Test1";
+myVar = "GG1";
+console.log(myVar);
+
+1.let
+let myLet = "Hellow World";
+let myLet = "Test 2";
+myLet = "GG2";
+
+console.log(myLet);
+
+3.const
+const myConst = "Hellow World";
+const myConst = "Test 3";
+myConst = "GG3";
+console.log(myConst);
+
+//결론 재선언:var 재할당:var let
+
+
+//지수형(Exp)
+let num3 = 2.5e5; //2.5 * 10^5
+
+
+//암시적, 명시적
+암시적 
+let str = 1  + "2";
+결과 : 12
+
+// 논리 연산자
+
+
+/*****
+ *  함수
+ */
+함수 = function(기능)
+input, output
+
+function () {}
+
+/**** 화살표 함수 (ES6 신 문법) */
+function add (x, y) {
+    return x + y;
+}
+
+let arrowFunc01 = (x, y) => {
+    return x + y;
+}
+
+//중괄호 안의 한줄인 경우는 {} 생략가능
+let arrowFunc02 = (x, y) => x + y;
+
+/** 
+ *  조건부 실행 
+ * */
+
+//And 조건 (&&)
+if(x > 10){
+    console.log("X는 양수 입니다.");
+}
+(x > 10) && console.log("X는 양수 입니다.")
+
+//Or 조건 (||)
+let y;
+let z = y || 20;
+
+console.log(z); //20
+
+/**
+ * 객체
+ */
+
+//생성자 함수를 이용한 객체 생성 방법
+function Person(name, age, gender) {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+}
+
+let person1 = new Person("홍길동", 30, "남자");
+let person2 = new Person("홍길동", 30, "남자");
+
+
+/**************
+ * ES6
+ * 
+ */
+
+2015년도 대규모 문법적 향상
+
+
+//구조분해할당 : destructuring(de + structure + ing)
+//de = not
+// structure = 구조
+// 배열이나, 객체의 속성
+
+// (1) 배열의 경우
+let [value1, value2] = [1, "new"];
+console.log("1", value1); // 1
+console.log("2", value2); // new
+
+let arr = ["value1", "value2", "value3"];
+let [a, b, c, d] = arr;
+console.log(a); //value1
+console.log(d); //undefined
+
+// (2) 객체인 경우
+let user = {
+    name : "nbc",
+    age : 30,
+}
+
+let {name , age} = {
+    name : "abc",
+    age : 30,
+}
+
+// 새로운 이름으로 할당
+let {
+    name: newName,
+    age: newAge,
+} = user;
+console.log("newName" , newName);
+
+let {name, age, birdthday = "today"} = user;
+// undefined일 경우에만 초기값 가능
+
+//단축 속성명 : property shorthand
+const name2 ="abc";
+const age2 = "30";
+
+const obj = {name2,age2};
+const obj = {name2 : name2 , age2, age2};
+
+//전개 구문 = spread operator
+//destricturing과 함께 가장 많이 사용되는 문법
+let arr = [1, 2, 3];
+console.log(arr);
+console.log(...arr);
+
+let arr = [1,2,3]; 에 4를 넣고 싶음
+let newArr = [...arr];
+console.log(newArr); // [1,2,3]
+let newArr = [...arr,4]; 
+console.log(newArr); // [1,2,3,4]
+
+// 객체일 경우
+let user = {
+    name : 'abc',
+    age : 30,
+}
+
+let user = {...user};
+
+// 나머지 매개변수
+function exampleFunc(a,b,c, ...args){
+    console.log(a,b,c); //1 2 3
+    console.log(...args); //
+}
+exampleFunc(1,2,3);
+
+function exampleFunc(a,b,c, ...args){
+    console.log(a,b,c); //1 2 3
+    console.log(...args); //...args:4 5 6 7
+    console.log(args); // [4,5,6,7] 배열로 생성
+}
+exampleFunc(1,2,3,4,5,6); // ...args:4 5 6 7
+
+//템플릿 리터럴
+console.log(`hellow world ${3+3}`);
+//백티는 멀티라인을 지원함.
+
+/** 일급 객체 First-Class Object */
+//- 함수를 객체처럼 여러가지 방식으로 다룸
+
+// (1) 변수에 함수를 할당할 수 있다.
+// 함수가 마치 값으로 취급/ 함수가 나중에 사용될 수 있도록 조치가 되었다.
+// const sayHellow = function(){
+//     console.log('hellow');
+// }
+
+// (2) 함수를 인자로 다른 함수에 전달할 수가 있다.
+// (2-1) 콜백함수 : 매개변수로써 쓰이는 함수
+// (2-2) 교차함수 : 함수를 인자로 받거나 return하는 함수
+function callFunction(func){
+    //매개변수로 받은 변수가 사실, 함수다.
+    func();
+}
+
+const sayHellow = function(){
+    console.log('hellow');
+}
+
+console.log(callFunction(sayHellow));
+
+// (3) 함수를 반환할 수 있다.
+function createAdder(num){
+    return function(x){
+        return x + num;
+    }
+}
+
+const addFive = createAdder(5);
+// const addFive = function(x){
+//     return x + 5;
+// };
+
+console.log(addFive(10)); //15
+
+// 일급객체로써의 함수 (2)
+
+const person = {
+    name : 'John',
+    age: 31,
+    isMarried: true,
+    sayHellow: function(){
+        console.log(`Hellow my name is ${this.name}`); //나옴
+    },
+    sayHellow2: () =>{
+        console.log(`Hellow my name is ${this.name}`); //undefined
+    }
+}
+person.sayHellow(); 
+
+
+//배열의 요소로 함수를 할당
+const myArr = [
+    function (a, b){
+        return a+b;
+    }, function (a,b){
+        return a-b;
+    },
+];
+console.log(myArr[0](1,3)); //4
+console.log(myArr[1](1,3)); //-2
+
+
+//
+function multiplyBy(num){
+    return function(x){
+        return x * num;
+    };
+};
+
+function add(x,y){
+    return x + y;
+}
+
+const multiplyByTwo = multiplyBy(2);
+// const multiplyByTwo = function(x){
+//     return x * 2;
+// };
+
+const multiplyByThree = multiplyBy(3);
+// const multiplyByThree = function(x){
+//     return x * 3;
+// };
+
+const result = add(multiplyByTwo(5), multiplyByThree(10));
+console.log(`Final ->> ${result}`);
+
+
+/*****
+ *  Map / Set
+ */
+
+Map, Set 의 목적 : 데이터의 구성, 검색 ,사용을 효율적으로 처리 > 기존의 객체 또는 배열보다
+
+(1) Map 
+- Key / value
+- Key에 어떤 데이터타입(유형)도 다 들어올 수 있다.
+- Map은 키가 정렬된 순서로 저장되기 때문이다
+> 검색, 삭제, 제거 , 여부 확인
+
+const myMap = new Map();
+myMap.set('key','value');
+myMap.get('key')
+
+// for a of B
+// 이터레이터 : 반복자
+
+for (const key of myMap.keys()){
+    console.log(key);
+}
+
+for (const value of myMap.values()){
+    console.log(value);
+}
+
+for (const entries of myMap.entries()){
+    console.log(entries);
+}
+
+myMap.has("two"); //key 기반 검색
+
+/****
+ *  Set
+ */
+// 고유한 값을 저장하는 자료구조다.
+// 값만 저장한다.
+// 키를 저장하지않는다
+// 값이 중복되지 않는 유일한 요소로만 구성된다
+const mySet = new Set();
+mySet.add("value1");
+mySet.add("value2");
+
+
+//Iterator, 반복했던 그 친구
+for(const value of mySet.values()){
+    console.log(value);
+}
+
+
