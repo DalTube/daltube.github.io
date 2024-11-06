@@ -1,0 +1,116 @@
+---
+title: (TIL) 2024-11-06
+date: 2024-11-06 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프, JavaSciript
+  ]
+---
+
+# JavaScript
+---
+
+### 용어 정리
+- 스코프 : 식별자에 대한 유효 범위
+- 스포크 체인 : 
+
+# 콜백함수
+ - 함수에 파라미터로 들어가는 함수
+ - Callback = call(부르다) + back(되돌아오다) = 되돌아와서 호출
+
+**제어권**
+1. 호출 시점에 대한 제어권을 갖는다.
+2. 인자에 대한 제어권을 갖는다. 
+
+this
+콜백함수도 함수이기에 기본적으로 this가 전역객체를 참조한다.
+
+closer
+
+콜백지옥
+익명성 함수를 많이 사용함으로서 들여쓰기 상태가 깊어지
+
+동기 vs 비동기
+동기: 완료될때까지 기다림
+비동기: 기다리지 않고 다음 작업 진행
+
+콜백지옥 해결방안
+기명함수 (함수를 변수처리) 는 리소스를 많이 잡아먹음
+
+콜백함수_Promise : 처리가 끝나면 알려줌 / resolve reject / then(다음) , catch(오류)
+
+```javascript
+new Promise(function(resolve){
+    SetTimeout(function(){
+        var name = "에스프레소"
+        resolve(name)
+    } ,500);
+}).then(function(prevName){
+    return ...
+})
+```
+
+비동기 작업
+- 순서를 보장하지않는다
+
+
+Generator
+itaratro 객체를 생성한다.
+
+*가 붙는 함수가 제너레이터  
+
+# Dom
+Document Object Model
+
+
+# 클래스(Class)
+- 클래스 : 책상을 만드는 설계도
+- 인스턴스 : 실제 책상
+```javascript
+class Person{
+    constructor (name, age) {
+        this._name = name;
+        this._age = age;
+    }
+
+    get name () {
+        return this._name;
+    }
+
+    set name (value) {
+        this._name = value;
+    }
+}
+```
+
+getter setter
+
+underscore : private(은밀하고, 감춰야할)
+
+**상속**
+```javascript
+class Animal {
+
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak(){
+        console.log(`${this.name} says!`);
+    }
+}
+
+class Dog extends Animal {
+    speak() { //overriding
+        console.log(`${this.name} barks!`);
+    }
+}
+```
+
+<!-- super(); -->
+
+<!-- constroctur; -->
+
+# RougeLike Project
+[ROGUELIKE DEFENCE - 기획](https://daltube.github.io/Rougelike)
