@@ -120,7 +120,6 @@ tags:
 ![Game Process](./img/TurnProcess.png)
 
 
-
 ```markdawn
 레이싱/턴제
 ㅁㅁㅁㅁㅁㅡㅡㅡ
