@@ -1,0 +1,33 @@
+---
+title: 최대공약수와 최소공배수
+date: 2024-11-07 00:00:00
+categories: [캠프, CodeKata]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+##### 문제 링크
+**[PROGRAMMERS]** [최대공약수와 최소공배수](https://school.programmers.co.kr/learn/courses/30/lessons/12940)
+
+##### 풀이
+```javascript
+function solution(n, m) {
+    var answer = [];
+    
+    answer[0] = getGcd(n, m);       //최대공약수
+    answer[1] = n * m / answer[0];  //최소공배수
+    
+    return answer;
+}
+
+function getGcd(n,m){
+    if(m == 0) return n;
+    return getGcd(m , n % m);
+}
+```
+
+##### 유클리드 호제법(-互除法, Euclidean algorithm) 
+- 두 양의 정수, 혹은 두 다항식의 최대공약수를 구하는 하나의 알고리즘(방법)
+
