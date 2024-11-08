@@ -1,0 +1,72 @@
+---
+title: (TIL) 2024-11-08
+date: 2024-11-08 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+# 알고리즘
+---
+
+1) 우선은 뼈대를 생각해보세요!
+2) 뼈대를 직접 작성해보세요.
+3) 작성된 뼈대에 로직을 하나씩 작성
+**로직을 한번에 전부 생각하는 행위는 지양**
+
+###### 입력을 "abc"로 받으면 출력은 ["abc", "bca", "cab"]로 출력 문제.
+- 
+```javascript
+let str = 'abc';
+function solution(str) {
+   let cutStr = '';
+   let res = [];
+   for (let i = 0; i < str.length; i++) {
+      res.push(str);
+      cutStr = str.substr(0, 1);
+      str = str.substr(1, 2);
+      str += cutStr;
+   }
+   return res;
+}
+console.log(solution(str));
+```
+
+- 
+```javascript
+let str = 'abc';
+function solution(str) {
+   let res = [];
+   for (var i = 0; i < str.length; i++) {
+      let word = str.slice(i) + str.slice(0, i);
+      res.push(word);
+   }
+   return res;
+}
+console.log(solution(str));
+```
+
+---
+### 기타 작업 게시물 링크
+- [코드카타](https://daltube.github.io/posts/kata2/) - 3진법 뒤집기     
+- [프로젝트](https://daltube.github.io/posts/Roguelike/) - 보완작업  
+
+### 프로젝트 관련 작업
+1. 유닛 소환 기능 구현
+2. 몬스터 리스폰 기능 구현
+3. 턴 종료시 유닛/몬스터 공격 로직 개발 진행중
+
+---
+### 오늘의 주저리
+1. 코드카타
+- 진법 계산법이 하나도 기억이 안나서 살짝 인터넷에 검색하여 기본적인 계산법을 알아보고 거기에 맞는 코드를 짜서 작성을 시도 해보았다. 시간은 좀 걸리긴 했지만 그래도 예시 값에 대한 결과 값은 똑같이 나왔는데, 제출해보니 테스트 10번째에서 실패가 떠서 한참 디버깅을 해보면서 원인을 찾을려고 했으나 결국 시간이 너무 지체되어 중단...
+테스트 실패시 원인좀 알려주면 좋을텐데 ㅠㅠ 도저희 못찾겠다.
+
+2. 프로젝트
+- 조금식 조금식 기능을 만들어 가고 있지만 만들면서 게임 프로세스? 적으로 문제를 몇가지 발견했다. 유닛 조합시 조합 수량이 안맞으면 더이상 소환도 못해서 조합이 불가능하다거나, 몬스터 이동시 앞에 몬스터가 있으면 어떻게 해결할 것인지 등등... 주말동안 어떻게 해결할지에 대해서 생각을 좀 해봐야겠다.
+
+  
+
+
