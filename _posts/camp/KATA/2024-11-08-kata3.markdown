@@ -1,0 +1,51 @@
+---
+title: 크기가 작은 부분 문자열
+date: 2024-11-11 00:00:00
+categories: [캠프, CodeKata]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+##### 문제 링크
+**[PROGRAMMERS]** [크기가 작은 부분 문자열](https://school.programmers.co.kr/learn/courses/30/lessons/147355)
+
+
+###### 풀이
+```javascript
+let t = "500220839878";
+let p = "7";
+function solution(t, p) {
+  let leng = t.length > p.length ? p.length : t.length;
+  let maxNum = t.length > p.length ? t : p;
+  let minNum = t.length > p.length ? p : t;
+  let maxArr = [];
+
+  //큰 글자를 자름.
+  for (let i = 0; i < maxNum.length - (leng - 1); i++) {
+    maxArr.push(maxNum.substring(i, leng + i));
+  }
+  let answer = 0;
+  //배열 비교
+  for (let i = 0; i < maxArr.length; i++) {
+    if (Number(minNum) >= Number(maxArr[i])) {
+      answer++;
+    }
+  }
+  return answer;
+}
+```
+
+###### 우수 답안
+```javascript
+function solution(t, p) {
+    let count = 0;
+    for(let i=0; i<=t.length-p.length; i++) {
+        let value = t.slice(i, i+p.length);
+        if(+p >= +value) count++;
+    }
+    return count;
+}
+```
+
