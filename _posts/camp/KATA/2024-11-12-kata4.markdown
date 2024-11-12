@@ -1,0 +1,30 @@
+---
+title: 최소직사각형
+date: 2024-11-12 00:00:00
+categories: [캠프, CodeKata]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+##### 문제 링크
+**[PROGRAMMERS]** [최소직사각형](https://school.programmers.co.kr/learn/courses/30/lessons/86491)
+
+
+###### 풀이
+```javascript
+function solution(sizes) {
+  let garo = 0;
+  let sero = 0;
+
+  for (let i = 0; i < sizes.length; i++) {
+    if (sizes[i][0] < sizes[i][1]) sizes[i] = [sizes[i][1],sizes[i][0]];
+    if (garo < sizes[i][0]) garo = sizes[i][0];
+    if (sero < sizes[i][1]) sero = sizes[i][1];
+  }
+  return garo * sero;
+}
+```
+
+
