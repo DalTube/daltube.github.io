@@ -1,0 +1,40 @@
+---
+title: 숫자 문자열과 영단어
+date: 2024-11-14 00:00:00
+categories: [캠프, CodeKata]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+##### 문제 링크
+**[PROGRAMMERS]** [숫자 문자열과 영단어](https://school.programmers.co.kr/learn/courses/30/lessons/81301)
+
+###### 풀이
+```javascript
+let s = "1zerotwozero3";
+function solution(s) {
+  let numStr = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+  ];
+
+  for (let i = 0; i < numStr.length; i++) {
+    s = s.replace(numStr[i], i);
+    if (s.indexOf(numStr[i]) !== -1) s = s.replace(numStr[i], i);
+  }
+  return Number(s);
+}
+```
+
+
+
