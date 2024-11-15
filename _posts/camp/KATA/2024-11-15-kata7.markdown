@@ -1,0 +1,27 @@
+---
+title: 문자열 내 마음대로 정렬하기
+date: 2024-11-15 00:00:00
+categories: [캠프, CodeKata]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+##### 문제 링크
+**[PROGRAMMERS]** []()
+
+###### 풀이
+```javascript
+let arr = [6 , 4 , 5 , 3,  2  , 1];
+let n = arr.length;
+for(let i = 0; i < n -1; i++){
+  let minIndex;
+  for(let j = i+1; j < n; j++){
+    
+  }
+}
+```
+
+
+
