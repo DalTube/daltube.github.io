@@ -150,7 +150,7 @@ chalk.white뿐만 아니라 red, whiteBright로 바꿔서 해보니 똑같이 �
 
 
 ### 기타 작업 게시물 링크
-- [코드카타](https://daltube.github.io/posts/kata5/) - 숫자 문자열과 영단어     
+- [코드카타](https://daltube.github.io/posts/kata6/) - 숫자 문자열과 영단어     
 - [프로젝트](https://daltube.github.io/posts/Roguelike/) - 보완작업  
 
 ### 프로젝트 관련 작업
