@@ -1,0 +1,160 @@
+---
+title: (TIL) 2024-11-15
+date: 2024-11-15 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프, 알고리즘
+  ]
+---
+
+### 알고리즘 
+1. 스택
+ - LIFO(Last In First Out)의 성격을 가진 자료구조
+  - 픽 : 스택의 TOP 데이터를 보는 것.
+
+    ```javascript
+    peek() {
+    if (this.head === null) {
+      return null;
+    }
+    return this.head.data;
+    }
+    ```
+
+  - 푸시 : 스택에 원소를 삽입. TOP에 들어감.
+
+  ```javascript
+    push(value) { // 현재 [4] 밖에 없다면
+      let newHead = new Node(value); // [3] 을 만들고!
+      newHead.next = this.head; // [3] -> [4] 로 만든다음에
+      this.head = newHead; // 현재 head의 값을 [3] 으로 바꿔준다.
+    }
+    ```
+  - 팝: 스택의 TOP의 원소를 가져옴.
+
+  ```javascript
+  pop() {
+    if (this.head === null) {    // 스택이 비어있으면
+        return null;             // 여기서도 메시지를 리턴하지말고 null 리턴! 
+    }
+    let deleteHead = this.head;  // 제거할 node 를 변수에 잡습니다.
+    this.head = this.head.next;  // 그리고 head 를 현재 head 의 다음 걸로 잡으면 됩니다.
+    return deleteHead;           // 그리고 제거할 node 반환
+  }
+  ```
+ 
+2. 큐
+  - 큐의 Front(맨 앞) 데이터를 보는 것
+  - 큐에 원소를 삽입
+
+  ```javascript
+  enqueue(value) {
+    const newNode = new Node(value);
+    if (this.head === null) { // 만약 비어있다면,
+      this.head = newNode; // head(Front)에 new_node를
+      this.tail = newNode; // tail(Rear)에 new_node를 넣어줍니다!
+    } else {
+      // 비어있지 않다면 기존 tail에 새 노드를 포인터로 연결하고요! 
+      this.tail.next = newNode; 
+      // 새 노드를 tail로 설정해요!
+      this.tail = newNode;
+    }
+  }
+  ```
+  - 큐에서 원소를 뽑아오는 행위 (Delete)
+
+  ```javascript
+  dequeue() {
+    if (this.head === null) {
+      return null;
+    }
+    const deleteHead = this.head; // 제거할 node를 변수에 잡습니다.
+
+    this.head = this.head.next; // 그리고 head(Front)를 현재 head의 다음 걸로 잡으면 됩니다.
+
+
+    return deleteHead.value; // 그리고 제거할 node 반환을 해요!
+
+  }
+  ```
+3. 버블 정렬
+  - 첫 번째 자료와 두 번째 자료 ... (마지막-1)번째 자료와 마지막 자료를 비교하여 교환하면서 정렬
+  - 버블 정렬의 시간 복잡도는 O(N^2)
+
+  ```javascript
+  function bubbleSort(array) {
+    let n = array.length; // array의 길이를 n에 저장해요! 루프 카운트 변수로 쓰겠죠?
+    for (let i = 0; i < n; i++) { // 이건 array를 순차적으로 돌겠다는 뜻이구요!
+      // 이건 버블정렬 알고리즘의 특성처럼 1개씩 줄어들면서 반복하며 비교를 해요. 
+      for (let j = 0; j < n - i - 1; j++) { // n-1 -> n-1-1 -> n-2-1
+        if (array[j] > array[j + 1]) { // 앞의 원소가 뒤의 원소보다 크면 바꿔야겠죠?
+          let temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
+        }
+      }
+    }
+    return array;
+  }
+  ```
+
+4. 선택 정렬
+  - index 하나마다 위치할 원소를 결정
+  - 선택 정렬도 시간 복잡도는 O(N^2)
+
+  ```javascript
+    function selectionSort(array) {
+      let n = array.length; // 루프 카운트!
+      // 이번에는 i ~ n - 2까지 돌면서 실험군을 선택해요!
+      for (let i = 0; i < n - 1; i++) {
+        let minIndex = i; // i번째에 들어갈 최소값을 찾아요!
+        for (let j = i + 1; j < n; j++) {
+          // 현재 최소값으로 설정된 친구보다 더 작은 친구를 발견하면!
+          if (array[j] < array[minIndex]) {
+            minIndex = j; // 최소값 인덱스를 갱신합니다!
+          }
+        }
+        // i번째에 최소값 인덱스에 있는 값을 넣어줍니다!
+        let temp = array[i];
+        array[i] = array[minIndex];
+        array[minIndex] = temp;
+      }
+      return array;
+    }
+  ```
+5. 삽입 정렬
+  - 삽입 정렬은 전체에서 하나씩 올바른 위치에 "삽입" 하는 방식
+  - 정렬된 사람들 사이를 비집고 들어감
+  - 삽입 정렬의 시간 복잡도는 O(N^2)지만 최선의 경우엔 Ω(N)만큼의 시간 복잡도가 걸립니다.
+
+  ```javascript
+  function insertionSort(array) {
+    let n = array.length; // 루프 카운트!
+    // 중요: 삽입 정렬의 0번째 인덱스는 정렬된 상태라고 판단하므로 인덱스가 1부터 시작해요!
+    for (let i = 1; i < n; i++) {
+      // 최초 i = 1 -> i = 2
+      // 현재 index 범위 내에서 비교를 시작하죠! 비교 방향은 끝에서부터 시작해요!
+      for (let j = i; j > 0; j--) {
+        // 뒤의 값보다 앞의 값이 크면 바꿔줘요!
+        if (array[j - 1] > array[j]) { // array[1-1] > array[1]
+          let temp = array[j - 1];
+          array[j - 1] = array[j];
+          array[j] = temp;
+        } else {
+          // 그렇지 않다면 정렬된 상태이기 때문에 이번 루프는 바로 나가도 되어요!
+          break;
+        }
+      }
+    }
+    return array;
+  }
+  ```
+### 기타 작업 게시물 링크
+- [코드카타](https://daltube.github.io/posts/kata7/) - 문자열 내 마음대로 정렬하기   
+- [프로젝트](https://daltube.github.io/posts/Roguelike/) - 보완작업  
+
+### 프로젝트 관련 작업
+1. Display 업적 화면 작업
+2. 업적 기능 작업
+3. 버그 수정
