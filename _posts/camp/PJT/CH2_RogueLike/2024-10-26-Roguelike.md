@@ -1,5 +1,5 @@
 ---
-title: 2차 [CLI] ROGUELIKE DEFENCE
+title: 2차 [CLI] ROGUELIKE CASTLE DEFENCE
 date: 2024-11-17 00:00:00
 categories: [캠프, 프로젝트]
 tags:
