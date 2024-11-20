@@ -1,0 +1,10 @@
+---
+title: AWS EC2
+date: 2024-11-20 00:00:00
+categories: [AWS, AWS EC2]
+tags:
+  [
+    AWS, EC2
+  ]
+---
+

@@ -1,0 +1,16 @@
+---
+title: (TIL) 2024-11-20
+date: 2024-11-20 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+# **Node.js**
+---
+- Chrome V8 JavaScript 엔진으로 빌드된 JavaScript 런타임. Javascript를 브라우저가 아닌 컴퓨터에서 브라우저 없이 실행하게 도와주는 환경.
+
+
+
