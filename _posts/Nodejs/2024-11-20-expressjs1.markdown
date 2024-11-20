@@ -119,7 +119,7 @@ Router 구조
 2. **서버**는 받은 데이터에 따라 필요한 **비즈니스 로직을 수행**합니다.
 3. **서버**는 처리된 결과를 **클라이언트**에게 **응답(Response)**으로 보내줍니다.
 
-#### req, res 객체
+#### **req, res 객체**
 ---
 1. **req 객체**
   - req.app : req 객체를 통해 Express.js의 `app` 객체에 접근할 수 있습니다.
@@ -146,7 +146,7 @@ Router 구조
   - res.cookie(*Key, Value, Option*) : 쿠키를 설정할 때 사용합니다.
   - res.clearCookie(*Key, Value, Option*) : 쿠키를 제거할 때 사용합니다.
 
-#### HTTP Method
+#### **HTTP Method**
 ----
 Get, Post, Patch, Delete
 
@@ -188,7 +188,7 @@ router.delete('/api/:userId', async (req, res) => {
 });
 ```
 
-#### 미들웨어 
+#### **미들웨어** 
 ---
 미들웨어(Middleware)는 서버의 요청(Request)-응답(Response) 과정에서 중간에 위치하여 특정 기능을 수행하는 함수.
 
@@ -209,23 +209,55 @@ router.delete('/api/:userId', async (req, res) => {
 2. Express.js에서 미들웨어 흐름 
   ![next()](https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F37d79f84-576e-4657-b9f7-5afc5519788d%2FUntitled.png?table=block&id=007ecfaa-b338-4b09-91b5-a76249747baf&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1360&userId=&cache=v2)
 
-  ```javascript
-  app.use((req, res, next) => {
-      console.log('첫번째 미들웨어');
-      next();
-  });
+    ```javascript
+    app.use((req, res, next) => {
+        console.log('첫번째 미들웨어');
+        next();
+    });
 
-  app.use((req, res, next) => {
-      console.log('두번째 미들웨어');
-      next();
-  });
+    app.use((req, res, next) => {
+        console.log('두번째 미들웨어');
+        next();
+    });
 
-  app.use((req, res, next) => {
-      console.log('세번째 미들웨어');
-      next();
-  });
+    app.use((req, res, next) => {
+        console.log('세번째 미들웨어');
+        next();
+    });
 
-  // print: 첫번째 미들웨어
-  // print: 두번째 미들웨어
-  // print: 세번째 미들웨어
-  ```
+    // print: 첫번째 미들웨어
+    // print: 두번째 미들웨어
+    // print: 세번째 미들웨어
+    ```
+
+3. 에러 처리 미들웨어  
+Experss.js에서는 미들웨어나 라우터에서 에러가 발생하면, 해당 에러를 next 함수를 통해 다음 미들웨어로 전달합니다. 그리고, Express.js는 등록된 미들웨어 중에서 에러를 매개변수로 받는 미들웨어(에러 처리 미들웨어)를 찾아 실행하게되는 것.
+
+    ```javascript
+    app.use((err, req, res, next) => {
+      console.error(err.stack);
+      res.status(500).send('Something broke!');
+    });
+    ```
+
+    ```javascript
+    // /middlewares/error-handler.middleware.js
+
+    export default function (err, req, res, next) {
+      console.error(err);
+
+      // Joi 검증에서 에러가 발생하면, 클라이언트에게 에러 메시지를 전달합니다.
+      if (err.name === 'ValidationError') {
+        return res.status(400).json({ errorMessage: err.message });
+      }
+
+      // 그 외의 에러가 발생하면, 서버 에러로 처리합니다.
+      return res
+        .status(500)
+        .json({ errorMessage: '서버에서 에러가 발생하였습니다.' });
+    }
+    ```
+
+    미들웨어는 **등록된 순서대로 실행**됩니다. 비즈니스 로직을 수행한 후 발생한 에러는 **다음 미들웨어로 전달**된다.  
+    이 때, 에러 처리 미들웨어가 라우터 이후에 등록되어 있으면, 에러를 잡아 처리할 수 있다. 반대로, **라우터 이전에 에러 처리 미들웨어를 등록**하면 라우터에서 발생한 에러를 처리할 수 없다.  
+    따라서, **항상 에러 처리 미들웨어는 라우터 설정 코드 하단**에 위치해야 한다.

@@ -26,6 +26,7 @@ ES6(ECMAScript 6)는 2015년에 도입된 자바스크립트의 6번째 표준�
 #### **ES6 Module 사용**
 ---
 1. 화살표 함수 
+
 ```javascript
 /** 화살표 함수 export **/
 
@@ -44,6 +45,7 @@ console.log(addArrowFunction(5, 3));
 ```
 
 2. 익명 함수
+
 ```javascript
 /** 익명 함수 export **/
 
@@ -62,6 +64,7 @@ console.log(addAnonymousFunction(9, 3));
 ```
 
 3. export default Object
+
 ```javascript
 /** export default Object **/
 
@@ -118,6 +121,7 @@ console.log(defaultAddFunction(12, 16));
 ```
 
 5. export default 익명 함수
+
 ```javascript
 /** 익명 함수 export default **/
 

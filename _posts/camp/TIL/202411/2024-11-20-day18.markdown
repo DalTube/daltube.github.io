@@ -8,9 +8,12 @@ tags:
   ]
 ---
 
-# **Node.js**
----
-- Chrome V8 JavaScript 엔진으로 빌드된 JavaScript 런타임. Javascript를 브라우저가 아닌 컴퓨터에서 브라우저 없이 실행하게 도와주는 환경.
+TIL에도 작성을 하기도 하지만 별도로 저만의 필요한 부분만을 카테고리 별로 정리를 해둘 필요가 있다고 판단되서
+복습겸 Nodejs 입문 1주차 2주차 내용에 대한 작업을 진행했습니다. (미완성)
+
+[Node.js](https://daltube.github.io/posts/nodejs1/)
+[Express.js](https://daltube.github.io/posts/expressjs1/)
+[ES6](https://daltube.github.io/posts/javascript/)
 
 
 
