@@ -1,0 +1,11 @@
+---
+title: (TIL) 2024-11-22
+date: 2024-11-22 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+[Node 숙련 1주차](https://daltube.github.io/posts/database1/)  

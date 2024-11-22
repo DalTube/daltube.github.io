@@ -1,0 +1,189 @@
+---
+title: (TIL) 2024-11-21
+date: 2024-11-21 00:00:00
+categories: [데이터베이스, TIL (Today I Learned)]
+tags:
+  [
+    데이터베이스
+  ]
+---
+
+# 데이터베이스
+---
+'데이터의 집합'이라고 할 수 있습니다. 실제 데이터가 저장되는 저장소의 역할을 수행
+
+#### 데이터베이스 관리 시스템(DBMS)
+---
+데이터베이스(Database)를 실제로 운영하고, 관리하는 소프트웨어. 오라클(Oracle), MySQL, MSSQL, MariaDB 등
+
+#### 관계형 데이터베이스(RDB)
+---
+각 데이터를 '테이블'이라는 표형태의 구조에 저장한다. 여기서, 각 '테이블'은 여러 정보를 저장하며, '테이블'간에 연관 관계를 설정하여, 여러 테이블에 분산된 데이터를 서로 연결하여 관리할 수 있다.
+
+#### 비관계형 데이터베이스 - Non-relational Database (NoSQL)
+---
+데이터의 형식이 고정되어 있지 않고, 유연하게 확장할 수 있는 데이터베이스. 이런 유연성 덕분에 SNS 서비스, 빅데이터와 같이 다양한 형식의 데이터를 빠르게 저장하고 검색해야 하는 경우에 주로 사용. 저장되는 데이터를 제대로 관리하지 않으면 데이터베이스에 저장된 데이터를 신뢰할 수 없게 된다.
+
+#### SQL(Structured Query Language)
+---
+데이터베이스에서 사용되는 생성, 삽입, 조회 명령문
+
+- 종류 
+  1. DDL (Data Definition Language)
+    데이터를 정의할 때 사용하는 언어로 테이블이나 데이터베이스를 생성, 수정, 삭제와 같은 행위를 할 때 사용  
+
+      ```sql
+      -- DATABASE, TABLE, VIEW, INDEX 등을 생성할 때 사용
+      CREATE DATABASE 데이터베이스명;
+      CREATE TABLE 테이블명
+      {
+      컬럼명 컬럼속성
+      }
+
+      -- DATABASE, TABLE, VIEW, INDEX 등을 삭제할 때 사용
+      DROP DATABASE 데이터베이스명;
+      DROP TABLE 테이블명;
+
+      -- DATABASE, TABLE 등의 속성을 변경할 때 사용
+      ALTER DATABASE 데이터베이스명 변경조건;
+      ALTER TABLE 테이블명 ADD 변경조건; -- 테이블에 새로운 컬럼을 추가합니다.
+      ALTER TABLE 테이블명 DROP 변경조건; -- 테이블에서 컬럼을 삭제합니다.
+      ALTER TABLE 테이블명 MODIFY 변경조건; -- 테이블의 컬럼을 수정합니다.
+      ALTER TABLE 테이블명 RENAME 변경조건; -- 테이블의 이름을 변경합니다.
+      ```
+  2. DML (Data Manipulation Language)
+    데이터베이스에서 데이터를 조작할 때 사용하는 언어로 데이터의 저장, 삭제, 수정, 조회와 같은 행위
+    
+      ```sql
+      -- 조회
+      SELECT 컬럼목록 FROM 테이블명 [WHERE 조건];
+
+      -- 등록
+      INSERT INTO 테이블명 (컬럼목록) VALUES (값목록);
+
+      -- 삭제
+      DELETE FROM 테이블명 [WHERE 조건];
+
+      -- 수정
+      UPDATE 테이블명 SET 컬럼 = 값 [WHERE 조건];
+      ```
+  3. DCL (Data Control Language)
+    데이터베이스에 대한 권한과 관련된 문법으로 특정 유저가 DB에 접근할 수 있는 권한을 설정할 때 사용
+
+      ```sql
+      -- 데이터베이스의 특정한 유저에게 사용 권한을 부여할 때 사용
+      GRANT [권한] ON 객체명 TO 사용자;
+
+      -- 데이터베이스의 특정한 유저에게 사용 권한을 취소할 때 사용
+      REVOKE [권한] ON 객체명 FROM 사용자;
+      ```
+  4. TCL (Transaction Control Language)
+    데이터베이스 내의 트랜잭션을 관리하는 문법으로, 트랜잭션의 시작과 종료, 그리고 롤백을 수행할 때 사용
+
+      ```sql
+        -- 데이터베이스의 작업이 정상적으로 완료되었음을 관리자에게 알려줄 때 사용
+        START TRANSACTION;
+        ...
+        COMMIT;
+
+        -- 데이터베이스의 작업이 비정상적으로 완료되었음을 관리자에게 알려줄 때 사용. 취소하고, 이전 상태로 되돌릴 때 사용
+        START TRANSACTION;
+        ...
+        ROLLBACK;
+      ```
+
+#### SQL 제약조건
+---
+각 컬럼들간의 제한사항을 관리하고, 조건을 위반하는 데이터를 방지하여 데이터베이스의 무결성(Integrity)을 보장하는 규칙
+  - 무결성(Integrity) : 데이터가 결함없이 정확하고 완전한 상태를 의미
+
+1. **고유(Unique) 제약 조건**
+    - 테이블에 소속된 특정 컬럼이 **중복된 키**를 가질 수 없는 조건
+    - 사용자 **아이디**, **이메일**과 같은 **고유한 정보**를 저장할 때 사용합니다.
+
+      ```sql
+      CREATE TABLE 테이블명
+      (
+          컬럼명 varchar(255) UNIQUE
+      );
+      ```
+
+2. **NULL 제약 조건**
+    - 특정 컬럼이 아무런 값을 입력받지 않도록 설정하거나, 무조건 값을 입력 받도록 설정하는 조건
+    - 데이터가 없다면, `NULL`을 저장하여, 데이터가 존재하지 않다는것을 표현합니다.
+
+      ```sql
+      CREATE TABLE 테이블명
+      (
+          컬럼명 varchar(255) NOT NULL
+      );
+      ```
+
+3. **기본 키 (Primary Key) 제약 조건**
+    - 테이블 내에서 각 **행(row)**을 **고유하게 식별할 수 있도록 보장**하는 조건
+
+      ```sql
+      CREATE TABLE 테이블명
+      (
+          -- PRIMARY KEY 컬럼 1개만 설정 하는 경우
+          컬럼명 varchar(255) PRIMARY KEY
+
+          -- PRIMARY KEY 2개 이상 설정 하는 경우
+          컬럼명1 varchar(255) ,
+          컬럼명2 varchar(255) ,
+          컬럼명3 varchar(255) ,
+          PRIMARY KEY (컬럼명1, 컬럼명2)
+      );
+      ```
+4. **외래 키 (Foreign Key) 제약 조건**
+    - 데이터베이스를 설계할 때 가장 많은 고민을 하게 될 **테이블 간의 관계**를 설정하는 조건
+    - 한 테이블의 **컬럼(Column)**이 다른 테이블의 **특정 행(Row)**을 참조하도록 설정하는 조건.
+    - 연관 관계 3가지
+      1. **1:1** : **1명**의 사용자(`User`)는 **1개**의 사용자 정보(`UserInfo`)를 가질 수 있다.
+      2. **1:N** : **1명**의 사용자(`User`)는 **여러개**의 주문(`Order`)을 할 수 있다.
+      3. **N:M** : **여러명**의 학생(`Student`)은 **여러개**의 학원(`School`)을 등록할 수 있다.
+
+    - 기본 생성
+      ```sql
+      CREATE TABLE 테이블명
+      (
+        FOREIGN KEY (컬럼명) REFERENCES 참조_테이블명 (참조_컬럼명)
+          ON DELETE [연계 참조 제약 조건]
+          ON UPDATE [연계 참조 제약 조건]
+      );
+      ```
+
+    - 연계 참조 무결성 제약 조건의 종류
+      1. CASCADE
+        - 참조하고 있는 개체가 **변경/삭제** 될 경우 함께 **변경/삭제**.
+        - ex) 사용자가 삭제된다면, 그 사용자의 **모든 주문 내역도 삭제**.
+
+          ```sql
+          FOREIGN KEY (userId) REFERENCES Users(userId)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE;
+          ```
+
+      2. NO ACTION
+        - 참조하고 있는 개체가 **변경/삭제** 될 경우 현재 데이터를 **NULL**로 변경합니다.
+        - ex) 사용자가 삭제되면, 사용자의 주문 내역의 ‘**사용자 ID**’는 **NULL**로 변경됩니다.
+
+          ```sql
+          FOREIGN KEY (userId) REFERENCES Users(userId)
+          ON DELETE SET NULL
+          ON UPDATE SET NULL;
+          ```
+
+      3. SET DEFAULT
+        - 참조하고 있는 개체가 **변경/삭제** 될 경우 현재 데이터를 **기본 값**으로 변경합니다.
+        - ex) 사용자가 삭제되면, 사용자의 주문 내역의 ‘**사용자 ID**’는 **기본 값**으로 변경됩니다.
+
+          ```sql
+          FOREIGN KEY (userId) REFERENCES Users(userId)
+          ON DELETE SET DEFAULT
+          ON UPDATE SET DEFAULT;
+          ```
+
+#### SELECT JOIN
+---
+두 테이블 사이의 공통된 데이터를 기준으로 테이블을 연결하여 하나의 테이블처럼 조회 할 수 있게 해주는 연산자.
