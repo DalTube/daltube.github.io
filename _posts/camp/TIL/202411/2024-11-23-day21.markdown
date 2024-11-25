@@ -8,4 +8,43 @@ tags:
   ]
 ---
 
+#### 오늘의 트러블슈팅
+---
+
+1. 배경 
+prisma를 설치하여 schema.prisma파일을 작성하여 TABLE정보를 작성 후 'npx prisma db push' 명령어를 통해서 테이블 생성 작업을 시도하는 중에 아래와 같은 오류가 발생 하였다.
+
+    ```bash
+    Error: P1013: The provided database string is invalid. invalid port number in database URL. Please refer to the documentation in https://www.prisma.io/docs/reference/database-reference/connection-urls for constructing a correct connection string. In some cases, certain characters must be escaped. Please check the string for any illegal characters.
+    ```
+
+2. 과정
+에러 내용을 보면 `invalid port number in database URL` 라고 적혀있어 AWS RDS에 데이터베이스 포트 번호를 확인하였지만 이상이 없었다. 그리고 DB클라이언트를 통해서 이미 해당 데이터베이스에 연결이 잘 되고 있는 것을 확인한 상태이기에 .env 파일에서 `DATABASE_URL="mysql://아이디:비밀번호@RDS엔드포인트:포트/DB명"` 양식대로 수정한 내용은 오타가 없었다.
+
+3. 결과
+열심히 공식 문서와 강의 자료를 비교하면서 체크를 해보았지만 도무지 답이 나오지않았고 인터넷으로 찾아봐도 별다른 정보를 찾지 못했다가 한참 후에 다시 구글링 한 결과 답을 알아냈다. 내가 설정한 비밀번호에는 특수문자가 들어가있다. 특수문자가 있는 경우에는 **퍼센트 인코딩**으로 변환 작업을 해야한다. 특수문자를 변환 한 후 재시도 해본 결과 정상적으로 처리된 것을 확인 할 수 있었다.
+
+    ```bash
+    PS C:\Campws\prisma_crud> npx prisma db push
+    Environment variables loaded from .env
+    Prisma schema loaded from prisma\schema.prisma
+    Datasource "db": MySQL database "prisma_crud" at "sparta-database.crmswqwkmx3t.ap-northeast-2.rds.amazonaws.com:3306"
+
+    Your database is now in sync with your Prisma schema. Done in 264ms
+
+    ✔ Generated Prisma Client (v5.22.0) to .\node_modules\@prisma\client in 99ms
+    ```
+
+#### 금일 TIL 공부내용 별도 정리
+---
+라이브러리 및 데이터베이스 관련해서는 TIL에 말고 별도로 정리해서 작성하였다.
+
+- 내용 추가  
+[데이터베이스](https://daltube.github.io/posts/database1/)  
+
+- 신규  
+[mysql2 라이브러리](https://daltube.github.io/posts/mysql2/)  
+[Prisma 라이브러리](https://daltube.github.io/posts/prisma/)  
+[JWT 라이브러리](https://daltube.github.io/posts/JWT/)  
+[쿠키와 세션](https://daltube.github.io/posts/cookiesession/)  
 

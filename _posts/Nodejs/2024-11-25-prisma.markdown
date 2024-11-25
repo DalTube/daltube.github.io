@@ -1,0 +1,238 @@
+---
+title: Prisma
+date: 2024-11-25 00:00:00
+categories: [Node.js, Prisma]
+tags:
+  [
+    Node.js,라이브러리
+  ]
+---
+
+# Prisma
+---
+ORM(Object Relational Mapping)으로써 Javascript 객체(Object)와 데이터베이스의 관계(Relation)을 연결(Mapping) 해주는 도구.
+
+1. 장점
+  - ORM의 속성값만 변경할 경우 언제든지 자유롭게 DB를 변경할 수 있다.
+2. 단점
+  - JOIN과 UNION 연산자를 동시에 사용하는 복잡한 쿼리를 작성할 경우, ORM으로 구현하기 위해 SQL 보다는 ORM을 더 깊게 이해해야 하는 상황이 발생.
+  - 서브 쿼리를 포함하는 복잡한 쿼리를 작성하거나, ORM의 SQL로 변환해주는 시간 조차 아까운 극한의 성능을 요구하는 쿼리가 필요한 상황에서는 Raw Query를 사용하는 것이 더욱 좋다.
+
+#### 설치
+---
+
+```bash
+# yarn 프로젝트를 초기화합니다.
+yarn init -y
+
+# express, prisma, @prisma/client 라이브러리를 설치합니다.
+yarn add express prisma @prisma/client
+
+# 설치한 prisma를 초기화 하여, prisma를 사용할 수 있는 구조를 생성합니다.
+npx prisma init
+```
+
+#### 사용법
+--- 
+
+1. 설치 확인
+```bash
+npx prisma --help
+```
+
+2. 업로드
+```bash
+# schema.prisma 파일에 설정된 모델을 바탕으로 MySQL에 정보를 업로드합니다.
+npx prisma db push
+```
+
+
+#### 파일
+---
+1. prisma.schema 
+  - Prisma가 사용할 데이터베이스의 설정 정보를 정의하기 위해 사용하는 파일입니다.
+    - `datasource`
+      - 데이터베이스에 대한 정의를 하기 위해 사용됩니다.
+      - Prisma가 어떤 데이터베이스 엔진을 사용할 것인지, 데이터베이스의 위치(URL)는 어디인지  등의 정보를 정의하는데 사용됩니다.
+
+        ```bash
+        datasource db {
+          // MySQL 데이터베이스 엔진을 사용합니다.
+          provider = "mysql"
+          // 데이터베이스 연결 정보를 .env 파일의 DATABASE_URL 로부터 읽어옵니다.
+          url      = env("DATABASE_URL")
+        }
+        ```
+
+      - **데이터베이스 URL은 크게 4가지로 나눠집니다.**
+        - **Protocol**
+            - Prisma가 사용할 데이터베이스 엔진을 나타냅니다.
+            - `postgresql`, `sqllite`, `mysql`과 같은 데이터베이스 엔진을 정의합니다.
+        - **Base URL**
+            - 데이터베이스의 **엔드 포인트**와 **아이디**, **패스워드, 포트 번호**를 나타냅니다.
+            - `<Id>:<Password>@<RDS Endpoint>:<Port>`의 형태로 구성됩니다.
+            - 특수문자가 들어가는 경우 변환해줘야 한다  
+               [퍼센트인코딩](https://developer.mozilla.org/ko/docs/Glossary/Percent-encoding)
+        - **Path**
+            - MySQL에서 사용할 데이터베이스 이름을 설정하는 구성 요소입니다.
+        - **Arguments**
+            - Prisma에서 데이터베이스 연결을 설정하는데 필요한 추가 옵션을 나타냅니다.
+            - 데이터베이스와 연결할 수 있는 **최대 커넥션 갯수**, **타임아웃 시간** 등이 있습니다.
+
+    - `generator`
+      - Prisma 클라이언트를 생성하는 방식을 설정하는 구문입니다.
+
+#### Prisma Model
+---
+특정 Table과 Column의 속성값을 입력하여, 데이터베이스와 Express 프로젝트를 연결(Mapping)시켜준다.
+
+```javascript
+// schema.prisma
+model Products {
+  productId   Int     @id @default(autoincrement()) @map(""productId"")
+  productName String  @unique @map(""productName"")
+  price       Int     @default(1000) @map(""price"")
+  info        String? @map(""info"") @db.Text
+
+  createdAt DateTime @default(now()) @map(""createdAt"")
+  updatedAt DateTime @updatedAt @map(""updatedAt"")
+
+  @@map(""Products"")
+}
+```
+- Prisma에서는 다양한 데이터 유형을 지원하는데, 위 예시에서는 `Int`, `String`, `DateTime` 등의 데이터 유형이 사용되었다.
+- 데이터 유형 뒤에 `?`가 붙게 된다면, `NULL`을 허용하는 컬럼이 된다.  
+    → 이 문법은 TypeScript에서 [Optional Parateters](https://www.typescripttutorial.net/typescript-tutorial/  typescript-optional-parameters/) 라고 불린다.
+    
+- `SQL` 에서 사용하는 것과 동일하게, `UNIQUE` 제약 조건과 `AUTO_INCREMENT` 제약조건을 사용할 수 있다.
+- `@@map("Products")`는 `Products` 테이블을 MySQL에서도 `Products`란 이름으로 사용하겠다는 뜻.  
+    → `@@map()` 을 작성하지 않으면, 테이블명의 대문자는 전부 소문자로 치환.
+
+```sql
+-- CreateTable
+CREATE TABLE `Products` (
+    `productId` INTEGER NOT NULL AUTO_INCREMENT,
+    `productName` VARCHAR(191) NOT NULL,
+    `price` INTEGER NOT NULL DEFAULT 1000,
+    `info` TEXT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Products_productName_key`(`productName`),
+    PRIMARY KEY (`productId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+#### **Prisma CLI**
+---
+- [`prisma db push`](https://www.prisma.io/docs/reference/api-reference/command-reference#db-push)
+    - `schema.prisma` 파일에 정의된 설정값을 실제 데이터베이스에 **반영(push)**합니다.
+    - 내부적으로 `prisma generate`가 실행됩니다.
+    - 데이터베이스 구조를 변경하거나 새로운 테이블을 생성할 수 있습니다.
+- [`prisma init`](https://www.prisma.io/docs/reference/api-reference/command-reference#init)
+    - Prisma를 사용하기 위한 초기 설정을 생성합니다.
+    - 이 명령어를 실행하면 `schema.prisma` 파일과 같은 필요한 설정 파일들이 생성됩니다.
+- [`prisma generate`](https://www.prisma.io/docs/reference/api-reference/command-reference#generate)
+    - Prisma Client를 생성하거나 업데이트 합니다.
+    - 대표적으로, `schema.prisma` 파일에 변경 사항이 생겼거나, 데이터베이스 구조가 변경되었을 때, 이 명령어를 사용해 **Prisma Client**를 최신 상태로 유지할 수 있습니다.
+- [`prisma db pull`](https://www.prisma.io/docs/reference/api-reference/command-reference#db-pull)
+    - 현재 연결된 데이터베이스의 구조를 `prisma.schema` 파일로 가져옵니다.**(pull)**
+    - 데이터베이스에서 구조 변경이 발생했을 때, 이 명령어를 사용하면 **Prisma Schema**를 최신 상태로 유지할 수 있습니다.
+    - 이후 `prisma generate` 명령어를 사용해 변경 사항을 Prisma Client에 반영할 수 있습니다.  
+
+[Prisma CLI reference]https://www.prisma.io/docs/orm/reference/prisma-cli-reference#synopsis
+
+#### Prisma Client
+---
+![Prisma Flow](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F7130543f-6321-4830-be20-085a48674d7b%2FPrisma_Application_Flow.png?table=block&id=5a9d1787-b33f-4f39-aad7-14ce70e0ce25&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1360&userId=&cache=v2)
+
+Prisma는 model을 generate하면, 해당 모델에 대한 정보가 node_modules폴더 내에 있는 Prisma Client에 전달.
+Prisma Client는 Prisma Schema에 정의한 데이터베이스 모델(model)을 TypeScript 코드로 변환하여, 개발자가 데이터베이스와 상호작용.
+
+```javascript
+import { PrismaClient } from "@prisma/client";
+
+export const prisma = new PrismaClient({
+  // Prisma를 이용해 데이터베이스를 접근할 때, SQL을 출력해줍니다.
+  log: ["query", "info", "warn", "error"],
+
+  // 에러 메시지를 평문이 아닌, 개발자가 읽기 쉬운 형태로 출력해줍니다.
+  errorFormat: "pretty",
+}); // PrismaClient 인스턴스를 생성합니다."
+```
+
+#### Prisma Method
+---
+
+1. 생성 (Create)
+
+    ```javascript
+    const 변수 = await prisma.테이블명.create({
+      data: {
+        컬럼명,
+      },
+    });
+    ```
+
+2. 조회 (Read)
+  - 다건 조회
+      ```javascript
+      const 변수 = await prisma.테이블명.findMany({
+        select: {
+          컬럼명1: true,
+          컬럼명2: true,
+        },
+      });
+      ```
+  - 단건 조회
+      ```javascript
+      const 변수 = await prisma.테이블명.findFirst({
+        where: { 컬럼명1: + 값 },
+        select: {
+          컬럼명1: true,
+          컬럼명2: true,
+        },
+      });
+      ```
+  - 유니크 조회
+      ```javascript
+      const post = await prisma.테이블명.findUnique({
+        where: { 컬럼명: 값 },
+      });
+      ```
+  - WHERE절 OR / NOT
+      ```javascript
+      await prisma.테이블명.findMany({
+        where: {
+          OR: [
+            {
+              email: {
+                endsWith: 'prisma.io',
+              },
+            },
+            { email: { endsWith: 'gmail.com' } },
+          ],
+          NOT: {
+            email: {
+              endsWith: 'hotmail.com',
+            },
+          },
+        },
+      }); 
+      ```  
+      [Filtering and Sorting](https://www.prisma.io/docs/orm/prisma-client/queries/filtering-and-sorting#combining-operators)
+    
+3. 수정(Update) 
+    ```javascript
+    await prisma.테이블명.update({
+        data: { title, content },
+        where: {
+          컬럼명: 값,
+        },
+      });
+    ```
+
+4. 삭제(Delete)
+    ```javascript
+    await prisma.테이블명.delete({ where: { 컬럼명: 값 } });
+    ```

@@ -1,0 +1,43 @@
+---
+title: mysql2
+date: 2024-11-25 00:00:00
+categories: [Node.js, mysql2]
+tags:
+  [
+    Node.js,라이브러리
+  ]
+---
+
+# mysql2
+---
+MySQL 데이터베이스를 Node.js에서 사용할 수 있게 도와주는 라이브러리(데이터베이스 드라이버). 데이터베이스와 개발 언어 사이를 연결해주는 역할을 담당.
+
+#### 연결
+---
+
+``` javascript
+import express from 'express';
+import mysql from 'mysql2';
+
+const connect = mysql.createConnection({
+  host: 'a', // AWS RDS 엔드포인트
+  user: 'b', // AWS RDS 계정 명
+  password: 'c', // AWS RDS 비밀번호
+  database: 'd', // 연결할 MySQL DB 이름
+})
+const app = express();
+const PORT = 3017;
+
+app.use(express.json());
+
+app.listen(PORT, () => {
+  console.log(PORT, '포트로 서버가 열렸어요!');
+});
+```
+
+#### 사용
+---
+
+```javascript
+await connect.promise().query(`DDL 또는 DML`);
+```
