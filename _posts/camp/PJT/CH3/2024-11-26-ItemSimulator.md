@@ -46,6 +46,8 @@ tags:
 
 #### 테이블 설계
 ---
+![ERD](![item_simulator_erd](https://github.com/user-attachments/assets/55073a52-a4db-4404-a612-6e95617350e8)
+)  
 1. ACCOUNT (계정)
   - ACCOUNT_ID : 테이블 고유ID (PK)
   - USER_ID : 아이디
@@ -56,7 +58,7 @@ tags:
 2. CHARACTER (캐릭터)
   - CHARACTER_ID : 테이블 고유ID (PK)
   - ACCOUNT_ID : 계정 테이블 ID (FK)
-  - CHARACTER_NM : 캐릭터 이름
+  - CHARACTER_NAME : 캐릭터 이름
   - HEALTH : HEALTH 스탯
   - POWER : POWER 스탯
   - MONEY : 소지 돈
@@ -65,6 +67,7 @@ tags:
 
 3. ITEM (아이템)
   - ITEM_CODE : 테이블 고유ID (PK)
+  - ITEM_TYPE : 아이템 종류
   - ITEM_NAME : 아이템 이름
   - ITEM_PRICE : 가격
   - HEALTH : HEALTH 스탯
