@@ -1,0 +1,89 @@
+---
+title: 3차 아이템 시뮬레이터
+date: 2024-11-16 00:00:00
+categories: [캠프, 프로젝트]
+tags:
+  [
+    캠프
+  ]
+---
+
+#### Todo 
+---
+1. 데이터베이스 모델링
+  1. 아이템 테이블
+    - 아이템 생성 API를 통해 생성된 아이템 정보는 아이템 테이블에 저장
+  2. 계정 테이블
+    - 아이디 : 영어 소문자 + 숫자 조합
+    - 비밀번호 : 해싱된 값을 저장, 최소 6자 이상
+  3. 캐릭터 테이블
+    - 하나의 계정은 여러개의 캐릭터를 보유할 수 있다
+    - Health,power,money
+  4. 캐릭터-인벤토리 테이블
+    - 캐릭터가 보유는 하고있으나 장착하고 있지 않은 아이템 정보
+  5. 캐릭터-아이템 테이블
+    - 이 테이블엔 실제로 캐릭터가 장착한 아이템 정보들이 존재
+
+2. API 구현 (필수)
+  1. 회원가입 API
+  2. 로그인 API
+  3. 캐릭터 생성 API
+  4. 캐릭터 삭제 API
+  5. 캐릭터 상세 조회 API
+  6. 아이템 생성 API
+  7. 아이템 수정 API
+  8. 아이템 목록 API
+  9. 아이템 상세 조회 API
+
+3. API 구현 (도전)
+  1. 아이템 구입 API
+  2. 아이템 판매 API
+  3. 캐릭터가 보유한 인벤토리 내 아이템 목록 조회 API
+  4. 캐릭터가 장착한 아이템 목록 조회 API
+  5. 아이템 장착 API
+  6. 아이템 탈착 API 
+  7. 게임 머니를 버는 API
+
+#### 테이블 설계
+---
+1. ACCOUNT (계정)
+  - ACCOUNT_ID : 테이블 고유ID (PK)
+  - USER_ID : 아이디
+  - USER_PW : 비밀번호
+  - CREATE_DT : 생성 일자
+  - UPDATE_DT : 수정 일자
+
+2. CHARACTER (캐릭터)
+  - CHARACTER_ID : 테이블 고유ID (PK)
+  - ACCOUNT_ID : 계정 테이블 ID (FK)
+  - CHARACTER_NM : 캐릭터 이름
+  - HEALTH : HEALTH 스탯
+  - POWER : POWER 스탯
+  - MONEY : 소지 돈
+  - CREATE_DT : 생얼 일자
+  - UPDATE_DT : 수정 일자
+
+3. ITEM (아이템)
+  - ITEM_CODE : 테이블 고유ID (PK)
+  - ITEM_NAME : 아이템 이름
+  - ITEM_PRICE : 가격
+  - HEALTH : HEALTH 스탯
+  - POWER : POWER 스탯
+  - CREATE_DT : 생성 일자
+  - UPDATE_DT : 수정 일자
+
+4. INVENTORY (인벤토리)
+  - INVENTORY_ID : 테이블 고유ID (PK)
+  - CHARACTER_ID : 캐릭터 테이블 ID (FK)
+  - ITEM_CODE : 아이템 테이블 ID (FK)
+  - COUNT : 개수
+
+5. EQUIPED (장비 장착)
+  - EQUIPED_ID : 테이블 고유ID (PK)
+  - CHARACTER_ID : 캐릭터 테이블 ID (FK)
+  - WEAPON : 주무기
+  - HEAD : 머리
+  - BODY : 몸
+  - SHOES : 신발
+  - ACCESSORY1 : 액세서리1
+  - ACCESSORY2 : 액세서리2

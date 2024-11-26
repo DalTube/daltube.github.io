@@ -1,0 +1,63 @@
+---
+title: bcrypt
+date: 2024-11-25 00:00:00
+categories: [Node.js, bcrypt]
+tags:
+  [
+    Node.js,라이브러리
+  ]
+---
+
+# bcrypt
+---
+입력받은 데이터를 특정 암호화 알고리즘을 이용하여 암호화 및 검증을 도와주는 모듈
+
+#### 설치
+---
+
+```bash
+# yarn을 이용해 bcrypt를 설치합니다.
+yarn add bcrypt
+```
+
+#### 사용법
+--- 
+1. 암호화
+    ```javascript
+    import bcrypt from 'bcrypt';
+
+    const password = 'Sparta'; // 사용자의 비밀번호
+    const saltRounds = 10; // salt를 얼마나 복잡하게 만들지 결정합니다.
+
+    // 'hashedPassword'는 암호화된 비밀번호 입니다.
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    console.log(hashedPassword); //$2b$10$OOziCKNP/dH1jd.Wvc3JluZVm7H8WXR8oUmxUQ/cfdizQOLjCXoXa
+    ```
+
+2. 복호화
+    ```javascript
+    import bcrypt from 'bcrypt';
+
+    const password = 'Sparta'; // 사용자가 입력한 비밀번호
+    const hashed = '$2b$10$OOziCKNP/dH1jd.Wvc3JluZVm7H8WXR8oUmxUQ/cfdizQOLjCXoXa'; // DB에서 가져온 암호화된 비밀번호
+
+    // 'result'는 비밀번호가 일치하면 'true' 아니면 'false'
+    const result = await bcrypt.compare(password, hashed);
+
+    console.log(result); // true
+
+    // 비밀번호가 일치하지 않다면, 'false'
+    const failedResult = await bcrypt.compare('FailedPassword', hashed);
+
+    console.log(failedResult); // false
+    ```
+
+#### 설치오류
+---
+1. node-pre-gyp: command not found
+    ```bash
+      # node-pre-gyp 패키지를 전역으로 설치합니다.
+      npm install -g node-pre-gyp
+    ```
+
