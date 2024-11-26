@@ -10,15 +10,12 @@ tags:
 
 #### 별도 정리
 ---
-[Transaction](https://daltube.github.io/posts/transaction/)
+[Transaction](https://daltube.github.io/posts/transaction/)  
 [bcrypt 라이브러리](https://daltube.github.io/posts/JWT/)  
 [Winston 라이브러리](https://daltube.github.io/posts/winston/)  
 
 #### 아이템 시뮬레이터 과제
 ---- 
-
-#### TODO LIST 정리
-
 1. 데이터베이스 모델링
   1. 아이템 테이블
     - 아이템 생성 API를 통해 생성된 아이템 정보는 아이템 테이블에 저장
@@ -54,7 +51,8 @@ tags:
   7. 게임 머니를 버는 API
 
 #### 테이블 설계
-
+---
+![ERD](https://github.com/user-attachments/assets/55073a52-a4db-4404-a612-6e95617350e8)  
 1. ACCOUNT (계정)
   - ACCOUNT_ID : 테이블 고유ID (PK)
   - USER_ID : 아이디
@@ -74,6 +72,7 @@ tags:
 
 3. ITEM (아이템)
   - ITEM_CODE : 테이블 고유ID (PK)
+  - ITEM_TYPE : 아이템 종류
   - ITEM_NAME : 아이템 이름
   - ITEM_PRICE : 가격
   - HEALTH : HEALTH 스탯
