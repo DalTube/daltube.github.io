@@ -1,0 +1,48 @@
+---
+title: (TIL) 2024-11-28
+date: 2024-11-28 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+#### 트러블 슈팅
+---
+
+1. 배경 
+  - 과제중에 아이템 아이템 장착 API를 개발하는 과정에서 아이템을 장착시 인벤토리에 있는 아이템 수량을 변경해줘야 하는데 수량이 변경되지 않는 현상이 발견되었다.  
+      
+2. 전개
+
+  ```javascript
+  //업데이트
+  await tx.inventory.update({
+    where: { inventoryId: equippedInventory.inventoryId },
+    data: {
+      qty: inventory.qty--,
+    },
+  });
+  ```
+
+  위와 같이 증가, 감소 연사자를 사용했는데 먹히지 않았다. console.log(inventory.qty) 를 통해서 봐도 해당 값은 정상적으로 갖고 있었다. inventory.qty - 1 로 변경해서 시도해보면 정상적으로 차감이 된다.
+
+3. 결말
+  증감 연산자는 2종류가 있다. 변수 뒤에 붙히는 것과 변수 앞에 붙히는 것. 뒤에 붙게되면 해당 코드가 실행 된 뒤에 차감된다. 앞에 연산자를 붙히면 코드가 실행될때 차감되서 적용된다. 결론은 연산자를 뒤에 붙혔기 때문에 해당 값을 읽을 때는 변경이 안된 값으로 update가 진행되고 난 뒤에 값이 차감되었던 것이다. 
+
+    ```javascript
+    //업데이트
+    await tx.inventory.update({
+      where: { inventoryId: equippedInventory.inventoryId },
+      data: {
+        qty: --inventory.qty,
+      },
+    });
+    ```  
+
+  위와 같이 해야 정상적으로 차감된 값으로 update가 진행된다. 
+
+
+  
+
