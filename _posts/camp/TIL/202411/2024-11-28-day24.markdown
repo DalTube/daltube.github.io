@@ -14,18 +14,16 @@ tags:
 1. 배경 
   - 과제중에 아이템 아이템 장착 API를 개발하는 과정에서 아이템을 장착시 인벤토리에 있는 아이템 수량을 변경해줘야 하는데 수량이 변경되지 않는 현상이 발견되었다.  
       
-2. 전개
-
-  ```javascript
-  //업데이트
-  await tx.inventory.update({
-    where: { inventoryId: equippedInventory.inventoryId },
-    data: {
-      qty: inventory.qty--,
-    },
-  });
-  ```
-
+2. 전개  
+    ```javascript
+    //업데이트
+    await tx.inventory.update({
+      where: { inventoryId: equippedInventory.inventoryId },
+      data: {
+        qty: inventory.qty--,
+      },
+    });
+    ```  
   위와 같이 증가, 감소 연사자를 사용했는데 먹히지 않았다. console.log(inventory.qty) 를 통해서 봐도 해당 값은 정상적으로 갖고 있었다. inventory.qty - 1 로 변경해서 시도해보면 정상적으로 차감이 된다.
 
 3. 결말
