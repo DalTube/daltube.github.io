@@ -1,0 +1,73 @@
+---
+title: (TIL) 2024-12-03
+date: 2024-12-03 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+오늘 팀 과제로 인해서 회의하고 작업하느라 따로 공부할 시간이 없었다. 과제를 진행하면서 데이터를 조회 하기 위해 사용해야 할 조건문등을 찾아본 것을 정리해 보았다. 기본적인 부분은 제외하고 특별하게 자주 쓰일 것 같은 것만 기록해 보았다.  
+
+- 다른 값과의 비교 (not)
+    ```javascript
+    const users = await prisma.user.findMany({
+      where: {
+        NOT: {
+          age: 25 // age가 25가 아닌 사용자 검색
+        }
+      }
+    });
+    ```
+- 범위 비교 (in, notIn, lt, lte, gt, gte)
+    ```javascript
+    const users = await prisma.user.findMany({
+      where: {
+        age: {
+          in: [18, 19, 20] // age가 18, 19, 20 중 하나인 사용자 검색
+        },
+        score: {
+          gt: 80 // score가 80보다 큰 사용자 검색
+        }
+      }
+    });
+    ```
+- 문자열 비교 (contains, startsWith, endsWith):
+    ```javascript
+    const users = await prisma.user.findMany({
+      where: {
+        name: {
+          contains: "John" // 이름에 "John"이 포함된 사용자 검색
+        },
+        email: {
+          endsWith: "@example.com" // 이메일이 "@example.com"으로 끝나는 사용자 검색
+        }
+      }
+    });
+    ```
+- AND, OR 연산자 사용:
+    ```javascript
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          { age: { gt: 20 } }, // age가 20보다 큰 사용자
+          { OR: [
+            { name: { contains: "John" } }, // 이름에 "John"이 포함된 사용자
+            { email: { endsWith: "@example.com" } } // 이메일이 "@example.com"으로 끝나는 사용자
+          ]}
+        ]
+      }
+    });
+    ```
+- JOIN (INCLUDE)
+    ```javascript
+    const result = await client.product.findMany({
+      where: {
+        id: 2, 
+      },
+      include: {
+        user: true,
+      }
+    });
+    ```
