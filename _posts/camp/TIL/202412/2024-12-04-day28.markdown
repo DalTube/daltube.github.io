@@ -1,0 +1,147 @@
+---
+title: (TIL) 2024-12-04
+date: 2024-12-04 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+#### 트러블 슈팅
+---
+
+1. 배경  
+  매치 메이킹 기능을 구현하면서 1차적으로 상대의 정보를 조회하기 DB클라이언트에서 아래와 같이 SQL문을 작성하여 테스트를 하였다.  
+      ```sql
+      SELECT * FROM Users A 
+      INNER JOIN Team B ON A.userId = B.userId 
+      WHERE A.userId != 1
+      AND A.MMR <= 1050 AND A.MMR >= 975
+      AND (B.inventoryId1 IS NOT NULL AND B.inventoryId2 IS NOT NULL AND B.inventoryId3 IS NOT NULL)
+      ORDER BY A.MMR;
+      ```  
+
+  그리고 결과는 아래와 같이 2개의 데이터가 조회가 되었다  
+      ```bash
+      [
+        {
+          userId: 3,
+          id: 'sparta2',
+          mmr: 1050,
+          Team: {
+            teamId: 3,
+            userId: 3,
+            inventoryId1: 7,
+            inventoryId2: 8,
+            inventoryId3: 9
+          }
+        },
+        {
+          userId: 12,
+          id: 'sparta11',
+          mmr: 980,
+          Team: {
+            teamId: 12,
+            userId: 12,
+            inventoryId1: 34,
+            inventoryId2: 35,
+            inventoryId3: 36
+          }
+        }
+      ]
+      ```  
+
+2. 발단  
+  prisma에서 아래와 같이 조건을 달아서 테스트를 해보았더니  
+      ```javascript
+      const enemies = await prisma.users.findMany({
+            where: {
+              userId: { not: userId },
+              AND: [
+                { mmr: { gte: myUser.mmr - matchRange / 2 } },
+                { mmr: { lte: myUser.mmr + matchRange } },
+              ],
+            },
+            include: {
+              Team: {
+                where: {
+                  AND: [
+                    { inventoryId1: { not: null } },
+                    { inventoryId2: { not: null } },
+                    { inventoryId3: { not: null } },
+                  ],
+                },
+              },
+            },
+          });
+      ```  
+  결과는 아래와 같이 3개의 데이터가 조회가 되었다. userId: 2 의 데이터가 조회되면 안되는데 조회가 되버려 문제가 발생하였다.  
+      ```bash
+      [
+        {
+          userId: 2,
+          id: 'sparta1',
+          mmr: 1000,
+          Team: null
+        },
+        {
+          userId: 3,
+          id: 'sparta2',
+          mmr: 1050,
+          Team: {
+            teamId: 3,
+            userId: 3,
+            inventoryId1: 7,
+            inventoryId2: 8,
+            inventoryId3: 9
+          }
+        },
+        {
+          userId: 12,
+          id: 'sparta11',
+          mmr: 980,
+          Team: {
+            teamId: 12,
+            userId: 12,
+            inventoryId1: 34,
+            inventoryId2: 35,
+            inventoryId3: 36
+          }
+        }
+      ]
+      ```  
+3. 과정  
+  우선 인터넷으로 해결방법을 검색하여 나온 select, NOT, not , isNot, is, Some 등 여러가지 방법을 넣어서 시도해보았지만 원하는 결과를 얻지 못하였다.  
+
+4. 결과
+  튜터님의 문의해본 결과 조회된 데이터를 보면 Team의 값이 Null로 조회되었다는 것은 inner Join이 아닌 Left Join이라는 것을 알게되었다. 해결방법을 찾아볼려고 시도는 하였으나 결국 찾지 못하여 기준 테이블을 바꿔서 처리하였다.
+      ```javascript
+      await prisma.team.findMany({
+        select: {
+          userId: true,
+          inventoryId1: true,
+          inventoryId2: true,
+          inventoryId3: true,
+          users: {
+            select: {
+              userId: true,
+              id: true,
+              mmr: true,
+            },
+          },
+        },
+        where: {
+          userId: { not: userId },
+          AND: [
+            { inventoryId1: { not: null } },
+            { inventoryId2: { not: null } },
+            { inventoryId3: { not: null } },
+            { users: { mmr: { gte: myUser.mmr - searchRange / 2 } } },
+            { users: { mmr: { lte: myUser.mmr + searchRange } } },
+          ],
+        },
+        orderBy: { users: { mmr: "desc" } },
+      });
+      ```  
+  이번에는 내가 원하는 방식에 대한 해결방법을 찾지 못하여 아쉽다. 나중에 시간 날 때 별도로 찾아보아야겠다.
