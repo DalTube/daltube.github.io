@@ -21,8 +21,7 @@ tags:
       AND (B.inventoryId1 IS NOT NULL AND B.inventoryId2 IS NOT NULL AND B.inventoryId3 IS NOT NULL)
       ORDER BY A.MMR;
       ```  
-
-  그리고 결과는 아래와 같이 2개의 데이터가 조회가 되었다  
+  그리고 결과는 아래와 같이 2개의 데이터가 조회가 되었다.  
       ```bash
       [
         {
