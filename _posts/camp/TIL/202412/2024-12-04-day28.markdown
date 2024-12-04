@@ -113,7 +113,7 @@ tags:
 3. 과정  
   우선 인터넷으로 해결방법을 검색하여 나온 select, NOT, not , isNot, is, Some 등 여러가지 방법을 넣어서 시도해보았지만 원하는 결과를 얻지 못하였다.  
 
-4. 결과
+4. 결과  
   튜터님의 문의해본 결과 조회된 데이터를 보면 Team의 값이 Null로 조회되었다는 것은 inner Join이 아닌 Left Join이라는 것을 알게되었다. 해결방법을 찾아볼려고 시도는 하였으나 결국 찾지 못하여 기준 테이블을 바꿔서 처리하였다.
       ```javascript
       await prisma.team.findMany({
