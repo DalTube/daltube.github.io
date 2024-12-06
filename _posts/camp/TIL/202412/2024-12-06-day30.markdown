@@ -1,0 +1,45 @@
+---
+title: (TIL) 2024-12-06
+date: 2024-12-06 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+어제 실시간 매칭 기능을 위해서 서버에 동시에 요청했을 때 서버에 반응이 없었던 이유가 싱글 스레드 때문에 블록킹 상태가 되어 추가 요청이 안되었던걸 알 수 있었다. 그래서 오늘은 추가적으로 해결방법에 대해 찾아보았다. 그중 하나가 Cluster인데... 아무리 찾아보고 적용을 해보아도 결국 실패하고 말았다. 분명 가능한 부분인데 내가 어떤 부분을 놓치고 이해를 못하고 있어서 안되고 있는걸로 생각이 되는데 대체 뭘 이해를 못하고 있는지 모르고 있는 것이 참 답답하다.
+
+#### Cluster
+---
+Node.js 기본적으로 싱글 스레드로 동작하고, 단일 CPU 코어에서 실행됩니다. 이는 우리가 가지고 있는 서버가 8코어 혹은 16코어라고 해도 하나의 코어만 사용한다는 뜻이고, 자원을 모두 활용하지 못한다.  
+  - cpu 코어를 모두 사용할 수 있게 해주는 모듈이며 포트를 공유하는 노드 프로세스를 여러개 둘 수 있다.
+  - 요청이 많이 들어왔을 때 병렬로 실행된 서버의 개수만큼 요청이 분산처리 되며 cluster 코어 하나당 노드 프로세스 하나를 배정가능하다.
+
+```javascript
+const cluster = require('cluster')
+const http = require('http')
+const numCPUs = require('os').cpus().length;
+// 시스템 코어수
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running}`);
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  cluster.on('exit', (worker, node, signal) => {
+    console.log(`${worker.process.pid}번 워커가 종료`);
+    console.log('code', code, 'signal', signal)
+    })
+}
+
+else {
+  http.createServer((req, res) => {
+      res.writeHead(200);
+        res.end('hello world\n')
+    }).listen(8000);
+}
+```  
+fork()를 통해 만들게 되면 모든 프로세스에서 포트를 공유하며 부하는 라운드로빈 방법을 사용하여 작업자간에 자동으로 분배.
+
+- 단점: 컴퓨터 자원(메모리, 세션 등) 공유 못 함. 각각 독립적인 프로세스를 띄우는거라, 서로 공유가 안됨
