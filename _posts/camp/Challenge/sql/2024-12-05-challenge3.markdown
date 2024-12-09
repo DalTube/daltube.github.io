@@ -1,0 +1,73 @@
+---
+title: DB(Part.3) 과제
+date: 2024-12-05 21:00:00
+categories: [캠프, 챌린지반]
+tags:
+  [
+    캠프
+  ]
+---
+### **문제 설명**
+
+당신은 도서관의 대여 기록을 관리하는 시스템을 운영하고 있습니다. 대여 기록이 저장된 `BOOK_RENTALS` 테이블에서 **연체된 책들**에 대한 정보를 분석하려고 합니다.  
+
+`BOOK_RENTALS` 테이블은 아래와 같은 구조로 되어있습니다.
+
+| rental_id | book_id | member_id | days_rented | due_date | return_date |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1001 | 201 | 10 | 2024-01-10 | 2024-01-20 |
+| 2 | 1002 | 202 | 5 | 2024-01-05 | 2024-01-04 |
+| 3 | 1003 | 203 | 8 | 2024-01-08 | 2024-01-15 |
+| 4 | 1001 | 204 | 7 | 2024-01-07 | 2024-01-06 |
+| 5 | 1002 | 205 | 12 | 2024-01-12 | 2024-01-15 |
+| 6 | 1003 | 206 | 15 | 2024-01-15 | 2024-01-25 |
+
+각 컬럼에 대한 설명은 다음과 같습니다.
+
+- `days_rented`: 대여 기간(일수)
+- `due_date`: 반납 예정일
+- `return_date`: 실제 반납일
+
+연체는 `return_date`가 `due_date`보다 늦은 경우로 정의됩니다. 참고로, 날짜 비교는 **DATEDIFF 함수**를 통해서 사용할 수 있습니다. 즉, `DATEDIFF(return_date, due_date)` 이걸로 며칠 차이인지 알 수 있어요.
+
+### 예시
+
+| book_id | overdue_count | avg_overdue_days |
+| --- | --- | --- |
+| 1001 | 1 | 10 |
+| 1002 | 1 | 3 |
+| 1003 | 2 | 8 |
+
+
+#### 결과
+---
+
+```sql
+CREATE TABLE `BOOK_RENTALS` (
+  `rental_id` int NOT NULL AUTO_INCREMENT,
+  `book_id` int NOT NULL,
+  `member_id` int DEFAULT NULL,
+  `days_rented` int NOT NULL,
+  `due_date` datetime DEFAULT NULL,
+  `return_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`rental_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO BOOK_RENTALS (book_id ,member_id,days_rented,due_date,return_date ) VALUES
+(1001, 201, 10, '2024-01-10', '2024-01-20'),
+(1002, 202, 5, '2024-01-05', '2024-01-04'),
+(1003, 203, 8, '2024-01-08', '2024-01-15'),
+(1001, 204, 7, '2024-01-07', '2024-01-06'),
+(1002, 205, 12, '2024-01-12', '2024-01-15'),
+(1003, 206, 15, '2024-01-15', '2024-01-25');
+
+WITH OVER_RENTAL AS(
+SELECT book_id ,member_id,days_rented,due_date,return_date,  DATEDIFF(return_date, due_date) AS over_date FROM BOOK_RENTALS
+where DATEDIFF(return_date, due_date) > 0
+)
+SELECT book_id, COUNT(*) AS overdue_count , TRUNCATE(AVG(over_date),0) AS avg_overdue_days FROM OVER_RENTAL
+GROUP BY book_id
+ORDER BY book_id;
+```
+
+![alt text](image.png)
