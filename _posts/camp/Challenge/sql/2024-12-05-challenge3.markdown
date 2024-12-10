@@ -66,6 +66,7 @@ tags:
     ```
 
 - 결과
+
 | book_id | overdue_count | avg_overdue_days |
 | --- | --- | --- |
 | 1001 | 1 | 10 |
