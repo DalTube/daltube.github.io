@@ -1,6 +1,7 @@
 {
   "name": "jekyll-theme-chirpy",
   "version": "7.1.1",
+  "type": "module",
   "description": "A minimal, responsive, and feature-rich Jekyll theme for technical writing.",
   "repository": {
     "type": "git",
