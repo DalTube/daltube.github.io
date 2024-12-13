@@ -1,0 +1,108 @@
+---
+title: (TIL) 2024-12-13
+date: 2024-12-13 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+### **Redis**
+---
+
+#### **Redis 자료구조 사용법**  
+
+1. String
+    ```bash
+    SET count 10
+    INCR count          # 10 → 11
+    DECR count          # 11 → 10
+    APPEND key "text"   # 문자열 뒤에 추가
+    ```  
+2. Hash
+    ```bash
+    코드 복사
+    HSET user name "Alice" age 30
+    HGET user name       # "Alice"
+    HGETALL user         # 모든 필드와 값
+    HDEL user age        # 특정 필드 삭제
+    ```  
+3. List
+    ```bash
+    코드 복사
+    LPUSH tasks "task1" "task2"   # 리스트의 앞에 추가
+    RPUSH tasks "task3"           # 리스트의 뒤에 추가
+    LPOP tasks                    # 첫 번째 요소 제거 및 반환
+    RPOP tasks                    # 마지막 요소 제거 및 반환
+    LRANGE tasks 0 -1             # 모든 요소 반환
+    ```  
+4. Set
+    ```bash
+    SADD tags "redis" "cache"
+    SMEMBERS tags                 # 모든 요소 조회
+    SREM tags "cache"             # 특정 요소 제거
+    ```  
+5. Sorted Set
+    ```bash
+    ZADD scores 100 "Alice" 90 "Bob"
+    ZRANGE scores 0 -1 WITHSCORES  # 낮은 점수부터 정렬된 값 조회
+    ZREM scores "Alice"            # 요소 삭제
+    ```  
+
+### **Redis의 주요 기능**   
+
+1. TTL (Time-To-Live)
+키의 유효기간을 설정한다. 
+    ```bash
+    코드 복사
+    SET key "value"
+    EXPIRE key 10       # 10초 후 삭제
+    TTL key             # 남은 시간 확인
+    ```  
+2. Pub/Sub (메시지 브로커)
+Redis를 메시지 브로커로 사용할 수 있다.  
+    ```bash
+    SUBSCRIBE channel   # 클라이언트 A
+    PUBLISH channel "Hello World!" # 클라이언트 B
+    ```  
+3. Transaction (트랜잭션)
+여러 명령어를 하나의 작업 단위로 실행한다.
+    ```bash
+    코드 복사
+    MULTI
+    SET key1 "value1"
+    SET key2 "value2"
+    EXEC
+    ```  
+4. Pipeline
+다수의 명령을 묶어 네트워크 왕복 비용을 줄인다.  
+    ```bash
+    redis-cli --pipe
+    ```  
+5. Persistence (데이터 영구 저장)
+Redis는 데이터 영구성을 지원한다.  
+- RDB (Snapshot): 일정 간격으로 데이터를 저장.
+- AOF (Append-Only File): 모든 변경 사항을 로그로 저장.
+
+#### **Node.js에서 Redis 사용**  
+1. 설치
+    ```bash
+    npm install redis
+    ```  
+2. 사용법    
+    ```javascript
+    import { createClient } from 'redis';
+
+    const client = createClient();
+
+    client.on('error', (err) => console.error('Redis Client Error', err));
+
+    await client.connect();
+
+    await client.set('name', 'John');
+    const value = await client.get('name');
+    console.log(value); // "John"
+
+    await client.quit();
+    ```
