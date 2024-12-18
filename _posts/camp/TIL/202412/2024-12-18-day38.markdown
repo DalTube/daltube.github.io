@@ -1,0 +1,84 @@
+---
+title: (TIL) 2024-12-18
+date: 2024-12-18 00:00:00
+categories: [캠프, TIL (Today I Learned)]
+tags:
+  [
+    캠프
+  ]
+---
+
+### 트러블 슈팅 1
+---
+
+1. **발단**  
+  - 과제를 진행 하던 도중에 서버 호출을 2번 하는 현상을 확인.
+      ![alt text](../../../../assets/img/til/image-1.png)
+
+2. **분석**
+  - 소켓 통신시 서버에서 우선으로 호출되는 부분에 console.log를 찍어서 확인을 해보았지만  위 사진과 같은 현상을 확인.
+      ```javascript
+      const initSocket = (server) => {
+        console.log("테스트1");
+        const io = new SocketIO();
+        //서버를 소켓 IO와 연결
+        io.attach(server);
+        //핸들러
+        registerHandler(io);
+      };
+      ```
+
+3. **결과**  
+  - 확인 결과 브라우저에서 해당 페이지를 2개를 열어 놓아 서버가 재기동 될 때마다 2번 호출 되었던 것을 확인. 
+
+### 트러블 슈팅 2
+---
+
+1. **발단** 
+  - 과제 항목중 broadcast 기능을 구현하고 결과 확인을 해보았더니 정상적으로 전 소켓에 전송처리가 되지 않는 문제가 확인되었다.
+
+  
+2. **분석**
+  - 로직부분에 있어서는 값을 return 하는 과정에서는 문제가 없는 것을 확인.
+      ```javascript
+      if (Object.keys(highScore).length === 0) {
+        await redisClient.hSet('HIGH_SCORE', uuid, score);
+        // 신기록 달성
+        return { broadcast: true, status: 'success', message: `${uuid} 님이 최고 점수를 갱신하셨습니다 !!! [점수: ${score}]`, score };
+      } else {
+        if (score > Number(Object.values(highScore)[0])) {
+          //신기록 달성
+          await redisClient.hDel('HIGH_SCORE', Object.keys(highScore)[0]);
+          await redisClient.hSet('HIGH_SCORE', uuid, score);
+          return { broadcast: true, status: 'success', message: `${uuid} 님이 최고 점수를 갱신하셨습니다 !!! [점수: ${score}]`, score };
+        } else {
+          return { status: 'success', message: 'Game Over' };
+        }
+      }
+      ```  
+  - return이 되고나서 값이 정상적으로 출력이 되는지 console.log를 통해서 확인해 보았더니
+      ```javascript
+      //찾은 핸들러를 실행
+      const response = handler(data.userId, data.payload);
+      console.log(response);
+      //모든 유저에게 보내야하는 경우
+      if (response.broadcast) {
+        io.emit('response', response);
+        return;
+      }
+      ```
+  - 아래 그림처럼 생각과 다른 결과 값이 출력되었다.
+      ![alt text](../../../../assets/img/til/image.png)  
+
+3. **결과**
+  - await는 Promise 객체를 실행하고 기다리지만, 지금 내 코드에서는 handler 함수를 Promise의 배열을 반환하게만 할 뿐, 실행이 되진 않았기 때문에 결과 값에 pending 상태의 Promise 배열만 남아있게 된 것으로 생각된다. 그래서 handler함수를 호출하는 부분을 async/await를 추가로 넣었더니 해결되었다.
+      ```javascript
+      //찾은 핸들러를 실행
+      const response = await handler(data.userId, data.payload);
+      //모든 유저에게 보내야하는 경우
+      if (response.broadcast) {
+        io.emit('response', response);
+        return;
+      }
+      ```
+      ![alt text](../../../../assets/img/til/12183.png)
