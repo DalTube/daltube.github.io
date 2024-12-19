@@ -58,7 +58,6 @@ tags:
           return { status: 'fail', message: `Invalud elapsed Time : ${elapsedScore}` };
         }
         ```  
-        ![alt text](../../../../assets/img/til/2412192.png)  
   - 클라이언트에서 점수 갱신하는 부분에서도 순서를 바꿔서 테스트를 해보았다.
         ```javascript
         update(deltaTime, currentStageData, targetStageData) {
